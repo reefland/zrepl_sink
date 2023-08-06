@@ -83,7 +83,7 @@ Sink server daemon container for zrepl push jobs. This is intended for environme
             - "k3s06"
     ```
 
-    * Review property overrides, below prevents the Sink Server daemon host from trying to mount replicated datasets:
+    * Review [property overrides](https://zrepl.github.io/stable/configuration/sendrecvoptions.html#job-recv-options-inherit-and-override), below prevents the Sink Server daemon host from trying to mount replicated datasets:
 
     ```yaml
         recv:
@@ -122,6 +122,7 @@ docker run -d --privileged -p 8448:8448  \
 ```
 
 * Container runs as `root` and requires `--privileged` to access the underlying hosts `/dev/zfs` device to issue `zfs` commands
+* The internal port number `8448` is defined in the `zrepl.yml` file, external port `8448` will be used for inbound connection from clients (adjust as needed)
 
 ### Container Logs
 
@@ -142,3 +143,7 @@ Attempting to start zrepl daemon...
 2023-08-06T15:25:38Z [INFO][_control][job][Uv38$Uv38]: starting job
 2023-08-06T15:25:38Z [INFO][zrepl_sink_server][job][Uv38$Uv38]: starting job
 ```
+
+---
+
+* See [Configure Clients](./docs/client_manual_push.md) to Push Replicate to Sink Server daemon.
