@@ -2,6 +2,7 @@
 .gitignore
 .github
 .gitattributes
+.vscode/*
 !README*.md
 docs/*
 examples/*
