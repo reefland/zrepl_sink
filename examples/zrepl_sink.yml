@@ -1,0 +1,29 @@
+global:
+  control:
+    sockpath: /var/run/zrepl/control
+  logging:
+    - type: stdout
+      format: human
+      level: info
+      color: true
+
+jobs:
+  - type: sink
+    name: zrepl_sink_server
+    root_fs: "zroot/sink"
+    serve:
+      type: tls
+      listen: ":8448"
+      listen_freebind: true
+      ca: /config/ca.crt
+      cert: /config/sink-srv.crt
+      key: /config/sink-srv.key
+      client_cns:
+        - "dldsk01"
+    recv:
+      properties:
+        override: {
+          "canmount": "noauto"
+        }
+      placeholder:
+        encryption: inherit
