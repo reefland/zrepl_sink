@@ -10,6 +10,7 @@ ENV zrepl_apt_key_url=https://zrepl.cschwarz.com/apt/apt-key.asc \
     zrepl_apt_repo_file=/etc/apt/sources.list.d/zrepl.list
 
 RUN apt-get update \
+  && apt-get upgrade -y --no-install-recommends \
   && apt-get install -y --no-install-recommends zfsutils-linux curl gnupg lsb-release ca-certificates
 
 # Fetch the zrepl apt key
