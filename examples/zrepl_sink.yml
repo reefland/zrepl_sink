@@ -1,3 +1,5 @@
+---
+
 global:
   control:
     sockpath: /var/run/zrepl/control
@@ -5,7 +7,6 @@ global:
     - type: stdout
       format: human
       level: info
-      color: true
 
 jobs:
   - type: sink
@@ -20,6 +21,12 @@ jobs:
       key: /config/sink-srv.key
       client_cns:
         - "dldsk01"
+        - "k3s01"
+        - "k3s02"
+        - "k3s03"
+        - "k3s04"
+        - "k3s05"
+        - "k3s06"
     recv:
       properties:
         override: {
