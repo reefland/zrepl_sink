@@ -2,5 +2,7 @@
 .gitignore
 .github
 .gitattributes
-README.md
-docs
+!README*.md
+docs/*
+examples/*
+*.txt
