@@ -1,0 +1,40 @@
+---
+
+- name: zrepl_sink
+  type: push
+  connect:
+    type: tls
+    address: 192.168.10.100:8448
+    ca: /etc/zrepl/ca.crt
+    cert: /etc/zrepl/dldsk01.crt
+    key: /etc/zrepl/dldsk01.key
+    server_cn: sink-srv
+  filesystems: {
+    "zroot/ROOT/default/var<" : true,
+    "zroot/ROOT/default/var/cache<": false,
+    "zroot/ROOT/default/var/lib/docker<": false,
+    "zroot/ROOT/default/var/log<": false,
+    "zroot/ROOT/default/var/tmp<": false,
+  }
+  send:
+    encrypted: true
+    send_properties: true
+  replication:
+    protection:
+      initial: guarantee_resumability
+      incremental: guarantee_incremental
+  snapshotting:
+    type: manual
+  pruning:
+    # no-op prune rule on sender (keep all snapshots), snapshot job takes care of this
+    keep_sender:
+      - type: regex
+        regex: ".*"
+    keep_receiver:
+      - type: grid
+        grid: 1x1h(keep=all) | 24x1h | 30x1d | 12x30d
+        regex: "^zrepl_.*"
+      # retain all non-zrepl snapshots on the sink host
+      - type: regex
+        negate: true
+        regex: "^zrepl_.*"
