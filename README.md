@@ -31,9 +31,9 @@ Sink server daemon container for zrepl push jobs. This is intended for environme
     ```shell
     $ ls -l 
 
-    .rw------- rich rich 1.2 KB Thu Aug  3 14:39:09 2023  ca.crt
-    .rw-r--r-- rich rich 4.6 KB Thu Aug  3 14:39:21 2023  sink-srv.crt
-    .rw------- rich rich 1.7 KB Thu Aug  3 14:39:31 2023  sink-srv.key
+    .rw------- rich rich 1.2 KB Thu Aug  3 14:39:09 2023 ca.crt
+    .rw-r--r-- rich rich 4.6 KB Thu Aug  3 14:39:21 2023 sink-srv.crt
+    .rw------- rich rich 1.7 KB Thu Aug  3 14:39:31 2023 sink-srv.key
     ```
 
 4. Customize `zrepl.yml` configuration file (see example [sink config file](./examples/zrepl_sink.yml))
@@ -146,4 +146,22 @@ Attempting to start zrepl daemon...
 
 ---
 
-* See [Configure Clients](./docs/client_manual_push.md) to Push Replicate to Sink Server daemon.
+#### Enable Prometheus Monitoring
+
+See `zrepl` project documentation on [monitoring](https://zrepl.github.io/configuration/monitoring.html) for details.
+
+In the `global:` section of the `zrepl.yml` file add:
+
+```yaml
+  monitoring:
+    - type: prometheus
+      listen: ":9811"
+      listen_freebind: true
+```
+
+* Add the port forwarding to the `docker run` command: `-p 9811:9811`
+* Add the container IP address to the Prometheus Scape jobs
+
+---
+
+* See [Configure Clients](./docs/client_manual_push.md) for Push Replication example to Sink Server daemon.
