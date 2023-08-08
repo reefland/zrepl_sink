@@ -123,4 +123,10 @@ Select the `zrepl_sink` job:
 * Snapshots on the remote Sink Server were pruned based on the `grid` definition and based on when the previous manual `wakeup` was issues
   * Screenshot shows 20 snapshots had aged out of the grid since previous manual `wakeup`
 
+---
+
+If you have trouble removing your test datasets / snapshots, then review [Unable to Destroy Zrepl Datasets / Snapshots](destroy_zrepl_datasets.md) to remove ZFS holds placed on them.
+
+---
+
 [Back to README.md](../README.md)
