@@ -13,6 +13,7 @@
     "zroot/ROOT/default/var<" : true,
     "zroot/ROOT/default/var/cache<": false,
     "zroot/ROOT/default/var/lib/docker<": false,
+    "zroot/ROOT/default/var/lib/snapd<": false,
     "zroot/ROOT/default/var/log<": false,
     "zroot/ROOT/default/var/tmp<": false,
   }

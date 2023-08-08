@@ -6,7 +6,7 @@ This is an example configuration used on a client to connect to Sink Server daem
 
 ---
 
-* Review full [manual push config](../examples/zrepl_push.yml) file described below
+* Review full [manual push config](../examples/zrepl_push_manual.yml) file described below
 * Review how [tls certificates](./ca_using_easyrsa.md) were created for `zrepl` clients, the 3 needed files have been placed in `/etc/zrepl/` directory on each client.
 
 1. The `jobs` section defines the `push` job on the client to connect to the Sink Server daemon:
