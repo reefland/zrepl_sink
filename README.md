@@ -83,13 +83,16 @@ Sink server daemon container for zrepl push jobs. This is intended for environme
             - "k3s06"
     ```
 
-    * Review [property overrides](https://zrepl.github.io/stable/configuration/sendrecvoptions.html#job-recv-options-inherit-and-override), below prevents the Sink Server daemon host from trying to mount replicated datasets:
+    * Review [property overrides](https://zrepl.github.io/stable/configuration/sendrecvoptions.html#job-recv-options-inherit-and-override), below prevents the Sink Server daemon host from trying to mount or aloow modifications of replicated datasets:
 
     ```yaml
         recv:
           properties:
             override: {
-              "canmount": "noauto"
+              "canmount": "off",
+              "mountpoint": "none",
+              "readonly": "on",
+              "openzfs.systemd:ignore": "on"
             }
     ```
 
