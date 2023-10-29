@@ -1,5 +1,4 @@
 ---
-
 global:
   control:
     sockpath: /var/run/zrepl/control
@@ -11,7 +10,7 @@ global:
 jobs:
   - type: sink
     name: zrepl_sink_server
-    root_fs: "zroot/sink"
+    root_fs: "zroot/zrepl_sink_data"
     serve:
       type: tls
       listen: ":8448"
@@ -29,8 +28,15 @@ jobs:
         - "k3s06"
     recv:
       properties:
+        # Force mountpoint to be inherited from Sink container (set to none)
+        inherit:
+          - "mountpoint"
         override: {
-          "canmount": "noauto"
-        }
+          # These two need to be disabled to support ZVOL replication
+          # "canmount": "off",
+          # "mountpoint": "none"
+          "readonly": "on",
+          "openzfs.systemd:ignore": "on"
+          }
       placeholder:
         encryption: inherit
