@@ -45,7 +45,7 @@ Once you know the ZFS tag name, use [zfs release](https://openzfs.github.io/open
   sudo zfs release -r zrepl_last_received_J_zrepl_sink_server zroot/sink/dldsk01/zroot/ROOT/default/var@zrepl_20230807_011951_000
   ```
 
-You should not be able to destroy the dataset and snapshots:
+You should now be able to destroy the dataset and snapshots:
 
 ```shell
 $ sudo zfs destroy -r zroot/sink/dldsk01
