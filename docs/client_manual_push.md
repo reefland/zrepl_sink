@@ -2,6 +2,8 @@
 
 This is an example configuration used on a client to connect to Sink Server daemon container via `tls` on demand. For simplicity *manual snapshotting* is used (meaning that some other `zrepl` job or some other method of creating a snapshot is assumed).
 
+I made an [Ansible Role](https://github.com/reefland/ansible-zrepl_sink_tls_client) used for pushing out Zrepl client configurations with TLS certificates.
+
 [Back to README.md](../README.md)
 
 ---
@@ -45,12 +47,12 @@ This is an example configuration used on a client to connect to Sink Server daem
 
 3. Review send options, see `zrepl` project docs on [Send Options](https://zrepl.github.io/stable/configuration/sendrecvoptions.html#job-send-options) for details
     * Example stated to send the encrypted datasets as [encrypted](https://zrepl.github.io/stable/configuration/sendrecvoptions.html#encrypted) and send dataset properties
-    * *WARNING:* This can be dangerous on the Sink Server daemon host if not done properly, read and understand [zrepl project warnings]((https://zrepl.github.io/stable/configuration/sendrecvoptions.html#job-note-property-replication)) on this topic
+    * *WARNING:* Setting `send_properties: true` on clients can be dangerous tn the Sink Server daemon host if not done properly, read and understand [zrepl project warnings]((https://zrepl.github.io/stable/configuration/sendrecvoptions.html#job-note-property-replication)) on this topic
 
     ```yaml
       send:
         encrypted: true
-        send_properties: true
+        send_properties: false
     ```
 
 4. Review replication options, see `zrepl` project docs for [Replication Option](https://zrepl.github.io/stable/configuration/sendrecvoptions.html#job-recv-options-inherit-and-override) details
