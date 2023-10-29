@@ -2,25 +2,28 @@
 
 Sink server daemon container for zrepl push jobs. This is intended for environments which have a kernel that support ZFS but are unable to deploy [zrepl](https://zrepl.github.io/index.html) [sink](https://zrepl.github.io/v0.2.1/configuration/jobs.html#job-type-sink) job type such as TrueNAS Scale.
 
-**This is experimental preview for testing**.  You should already have working knowledge of `zrepl`, its configuration and why you would want a sink server.
+**This is experimental proof of concept for testing**.  You should already have working knowledge of `zrepl`, its configuration and why you would want a sink server.
 
 ---
 
 ## Test Environment
 
-1. Create a dataset to hold sink job datasets from remote hosts
+1. Create a dataset container to hold sink job datasets from remote hosts
 
-    * Adjust the ZFS pool name and dataset name for your needs, `zroot/sink` is used here:
-
-    ```shell
-    zfs create zroot/sink -o mountpoint=none -o canmount=noauto
-    ```
-
-2. Create `config` directory for `zrepl.yaml` and certificates
+    * Adjust the ZFS pool name and dataset name for your needs, `zroot/zrepl_sink_data` is used here:
 
     ```shell
-    mkdir ./config
+    zfs create zroot/zrepl_sink_data -o mountpoint=none -o canmount=off -o readonly=on
     ```
+
+2. Create `config` directory for `zrepl.yaml` and certificates.
+
+    * This directory will be mapped into the container
+    * Do store this within the sink dataset as it will remain unmounted
+
+        ```shell
+        mkdir ./config
+        ```
 
 3. [Create TLS Certificates](./docs/ca_using_easyrsa.md) for `zrepl sink` daemon container
     * [zrepl transport](https://zrepl.github.io/configuration/transports.html#transport) documents different method to support inbound connections and client identification, this example assumes TLS certificates
@@ -29,7 +32,7 @@ Sink server daemon container for zrepl push jobs. This is intended for environme
     * `sink-srv.key` - Sink server daemon private key
 
     ```shell
-    $ ls -l 
+    $ ls -l ./config
 
     .rw------- rich rich 1.2 KB Thu Aug  3 14:39:09 2023 ca.crt
     .rw-r--r-- rich rich 4.6 KB Thu Aug  3 14:39:21 2023 sink-srv.crt
@@ -50,7 +53,7 @@ Sink server daemon container for zrepl push jobs. This is intended for environme
       * ZFS filesystems are received to `$root_fs/$client_identity/$source_path`
 
     ```yaml
-        root_fs: "zroot/sink"
+        root_fs: "zroot/zrepl_sink_data"
     ```
 
     * Define how connections will be served, this will listen for `tls` connections on port `8448`:
@@ -83,17 +86,21 @@ Sink server daemon container for zrepl push jobs. This is intended for environme
             - "k3s06"
     ```
 
-    * Review [property overrides](https://zrepl.github.io/stable/configuration/sendrecvoptions.html#job-recv-options-inherit-and-override), below prevents the Sink Server daemon host from trying to mount or aloow modifications of replicated datasets:
+    * Review [property overrides](https://zrepl.github.io/configuration/sendrecvoptions.html#a-note-on-property-replication), below prevents the Sink Server daemon host from trying to mount or allow modifications of replicated datasets:
 
     ```yaml
-        recv:
-          properties:
-            override: {
-              "canmount": "off",
-              "mountpoint": "none",
-              "readonly": "on",
-              "openzfs.systemd:ignore": "on"
-            }
+          recv:
+            properties:
+              # Force mountpoint to be inherited from Sink container (set to none)
+              inherit:
+                - "mountpoint"
+              override: {
+                # These two need to be disabled to support ZVOL replication
+                # "canmount": "off",
+                # "mountpoint": "none"
+                "readonly": "on",
+                "openzfs.systemd:ignore": "on"
+                }
     ```
 
     * Review properties assigned to placeholder datasets.  `zrepl` will maintain the hierarchy of your filesystem datasets even if you do not replicate all of them. Datasets not replicated will have a placeholder created for them:
@@ -163,7 +170,11 @@ In the `global:` section of the `zrepl.yml` file add:
 ```
 
 * Add the port forwarding to the `docker run` command: `-p 9811:9811`
-* Add the container IP address to the Prometheus Scape jobs
+* Add the container IP address to the Prometheus Scape jobs (as well as all zrepl clients)
+
+My work in progress [Grafana dashboard for Zrepl Sink Server](./examples/grafana_dashboard.json):
+
+![Grafana Dashboard for Zrepl Sink Server](./docs/zrepl_sink_server_dashboard.png)
 
 ---
 
