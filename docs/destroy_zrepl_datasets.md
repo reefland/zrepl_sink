@@ -2,7 +2,7 @@
 
 `Zrepl` as configured within these examples will place [zfs hold tags](https://openzfs.github.io/openzfs-docs/man/master/8/zfs-hold.8.html) on snapshots preventing them from being [destroyed](https://openzfs.github.io/openzfs-docs/man/master/8/zfs-destroy.8.html). Attempting to destroy the snapshots will result in misleading error messages such as `dataset is busy` and `dataset already exists` (see below).
 
-[Back to README.md](../README.md)
+[Back to README.md](./README.md)
 
 ---
 
@@ -56,4 +56,4 @@ NAME         USED  AVAIL     REFER  MOUNTPOINT
 zroot/sink   320K   513G      320K  none
 ```
 
-[Back to README.md](../README.md)
+[Back to README.md](./README.md)

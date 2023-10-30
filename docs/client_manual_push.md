@@ -4,7 +4,7 @@ This is an example configuration used on a client to connect to Sink Server daem
 
 I made an [Ansible Role](https://github.com/reefland/ansible-zrepl_sink_tls_client) used for pushing out Zrepl client configurations with TLS certificates.
 
-[Back to README.md](../README.md)
+[Back to README.md](./README.md)
 
 ---
 
@@ -131,4 +131,4 @@ If you have trouble removing your test datasets / snapshots, then review [Unable
 
 ---
 
-[Back to README.md](../README.md)
+[Back to README.md](./README.md)

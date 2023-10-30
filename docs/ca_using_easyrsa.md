@@ -2,7 +2,7 @@
 
 See [zrepl](https://zrepl.github.io/configuration/transports.html#certificate-authority-using-easyrsa) project for details on certificate creation using EasyRCA or Mutual TLS. Below are steps I used for testing with EasyRSA.
 
-[Back to README.md](../README.md)
+[Back to README.md](./README.md)
 
 The steps below created certificates for 6 nodes, a desktop and the sink server itself.
 
@@ -58,4 +58,4 @@ The `ca.crt` and *host certificate* and *host private key* will need to be copie
 * A list of `CN` allowed to connect will be defined on the Zrepl Sink Server `zrepl.yml` file
 * A ZFS dataset will be created by `zrepl` matching the `CN` to keep each hosts replicated ZFS snapshots isolated
 
-[Back to README.md](../README.md)
+[Back to README.md](./README.md)
